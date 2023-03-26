@@ -28,4 +28,3 @@ QUESTION 7 - The git command that updates the remote repository with local repos
 QUESTION 8 - The git commit command needs to be provided with a commit message that describes the changes made to the files being committed. 
 	     The commit message should be descriptive and explain what was changed and why
 
-
