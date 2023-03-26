@@ -6,7 +6,6 @@ items = {
     'Brie': 120,
     'Lemon': 75
 }
-
 money = 100
 
 def print_items():
@@ -15,17 +14,13 @@ def print_items():
         print(f"{item}: £{price}")
     print("Exit: To exit the shop")
 
-print("Welcome to the shop!")
-print_items()
 
-purchased = False
-for i in range(3):
+def purchase_item(choice):
+    global money
+    global purchased
+
     try:
-        choice = input("What would you like to buy? ")
-        if choice == "Exit":
-            print("Thank you for shopping with us!")
-            break
-        price = items[choice]
+        price = items[choice]  # Raises KeyError if choice is not in items
         if money < price:
             raise NotEnoughMoneyError("You don't have enough money for that!")
         else:
@@ -33,8 +28,6 @@ for i in range(3):
             money -= price
             print(f"You have £{money} left")
             purchased = True
-    except KeyError:
-        print("Invalid item choice!")
     except NotEnoughMoneyError as e:
         print(e)
         more_money = input("Do you have more money? (Y/N) ")
@@ -44,12 +37,28 @@ for i in range(3):
             print(f"You now have £{money}")
         else:
             print("Thank you for shopping with us!")
-            break
-    finally:
-        if purchased:
-            print("Thank you for shopping with us!")
-            break
-        elif i == 2:
-            print("Maximum purchase attempts reached. Thank you for shopping with us!")
+            purchased = False
+    except KeyError:
+        print("Invalid item choice!")
+        purchased = False
+
+
+print("Welcome to the shop!")
+print_items()
+
+purchased = False
+for i in range(3):
+    choice = input("What would you like to buy? ")
+    if choice == "Exit":
+        print("Thank you for shopping with us!")
+        break
+    else:
+        purchase_item(choice)
+
+    if purchased:
+        print("Thank you for shopping with us!")
+        break
+    elif i == 2:
+        raise KeyError("Maximum purchase attempts reached. Thank you for shopping with us!")
 
 input("Press Enter to exit...")
